@@ -13,19 +13,17 @@ namespace Movies.Controllers
     public class ImageController : Controller
     {
         private readonly IImageService _imageService;
-        private IHostingEnvironment _hostingEnvironment;
 
-        public ImageController(IImageService imageService, IHostingEnvironment hostingEnvironment)
+        public ImageController(IImageService imageService)
         {
             _imageService = imageService;
-            _hostingEnvironment = hostingEnvironment;
         }
 
         public IActionResult Index()
         {
             System.Drawing.Image image = _imageService.DownloadImageFromUrl("https://picsum.photos", 200, 300);
             
-            var imagePath = _hostingEnvironment.WebRootPath + "\\images";
+            var imagePath = AppDomain.CurrentDomain.BaseDirectory + "\\images";
             if (!Directory.Exists(imagePath))
                 Directory.CreateDirectory(imagePath);
             string fileName = Path.Combine(imagePath, "image.jpg");
