@@ -1,0 +1,86 @@
+﻿@model IEnumerable<Movies.Models.Movie>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Movie List</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<div>
+    <input type="text" name="searchString" id="searchString" /><input type="button" id="btnSearch" value="Search" />
+</div>
+<hr/>
+<table class="table table-striped table-hover">
+    <thead class="thead-dark">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Title)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Director)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Actors)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Year)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Image)
+            </th>
+            <th></th>
+            <th></th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Title)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Director)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Actors)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Year)
+                </td>
+                <td valign="middle" align="center">
+                    <img src="@Url.Content(@item.Image)" alt="@Html.DisplayFor(modelItem => item.Title)" width="100" />
+                    @*@Html.DisplayFor(modelItem => item.Image)*@
+                </td>
+                <td>@Html.ActionLink("Edit", "Edit", "Movie", new { id = item.Id })</td>
+                <td>@Html.ActionLink("Details", "Details", "Movie", new { id = item.Id })</td>
+                <td>@Html.ActionLink("Delete", "Delete", "Movie", new { id = item.Id })</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@section scripts{
+    <script type="text/javascript">
+        $(function () {
+
+            $("#btnSearch").click(function () {
+                var searchString = $("#searchString").val();
+                $("tbody tr td").each(function (i, element) {
+                    var content = $(element).text();
+                    if ((content.indexOf(searchString) != -1) & ($(element)[0].cellIndex < 5)){
+                        //found
+                        $(element).css("background-color", "yellow");
+                    }
+                    else {
+                        $(element).css("background-color", "white");
+                    }
+                });
+            });
+        });
+    </script>
+}
